@@ -30,11 +30,15 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 def create_user_with_organization(db: Session, user: UserSignup):
-    # Create organization first
-    db_org = Organization(name=user.organization_name)
-    db.add(db_org)
-    db.commit()
-    db.refresh(db_org)
+    # Check if organization already exists
+    db_org = db.query(Organization).filter(Organization.name == user.organization_name).first()
+    
+    if not db_org:
+        # Create new organization if it doesn't exist
+        db_org = Organization(name=user.organization_name)
+        db.add(db_org)
+        db.commit()
+        db.refresh(db_org)
     
     # Create user
     hashed_password = get_password_hash(user.password)
