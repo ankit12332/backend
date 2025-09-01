@@ -41,6 +41,52 @@ A full-stack application backend built with FastAPI, PostgreSQL, and JWT authent
 
 ### Prerequisites
 
+- Docker
+- Docker Compose
+- Git
+
+## Docker Setup (Recommended)
+
+### 1. Clone and Setup Project
+
+```bash
+git clone <repository-url>
+cd backend
+```
+
+### 2. Run with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+This will:
+- Start PostgreSQL database container
+- Build and start FastAPI backend container
+- Automatically run database migrations
+- Make the API available at `http://localhost:8000`
+
+### 3. Services
+
+- **Backend API**: `http://localhost:8000`
+- **PostgreSQL Database**: `localhost:5433` (external access)
+- **API Documentation**: `http://localhost:8000/docs`
+
+### 4. Environment Configuration
+
+The Docker setup uses `.env.docker` with these settings:
+
+```bash
+DATABASE_URL=postgresql://ankit:9658523363@db:5432/assignment
+SECRET_KEY=your-secret-key-change-this-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+## Manual Setup (Alternative)
+
+### Prerequisites
+
 - Python 3.8+
 - PostgreSQL
 - Git
@@ -81,13 +127,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 ### 5. Run Database Migrations
 
 ```bash
-# Initialize Alembic (already done)
-# alembic init alembic
-
-# Create migration
-alembic revision --autogenerate -m "Initial migration"
-
-# Apply migration
 alembic upgrade head
 ```
 
