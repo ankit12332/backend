@@ -7,6 +7,7 @@ from ..core.security import verify_password, create_access_token
 from ..core.config import settings
 from ..schemas.schemas import Token, UserSignup, User
 from ..crud import crud_user
+from ..core.deps import get_current_active_user
 
 router = APIRouter()
 
@@ -41,3 +42,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me", response_model=User)
+def get_current_user_info(current_user: User = Depends(get_current_active_user)):
+    return current_user
